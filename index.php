@@ -1,5 +1,5 @@
 <?php
-// Redirect to signup page by default
+// Redirect to login page by default
 header("Location: pages/login.php");
 exit;
 ?>
