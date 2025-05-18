@@ -9,7 +9,7 @@ class User {
         $this->conn = $db;
     }
 
-    // Register a new user
+    
     public function signup(string $username, string $password): bool {
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
@@ -22,7 +22,7 @@ class User {
         return $stmt->execute();
     }
 
-    // Log in an existing user
+    
     public function login(string $username, string $password): bool {
         $query = "SELECT password FROM {$this->table_name} WHERE username = :username";
         $stmt = $this->conn->prepare($query);
@@ -34,7 +34,7 @@ class User {
         return $user && password_verify($password, $user['password']);
     }
 
-    // Change the user's password
+  
     public function changePassword(string $username, string $newPassword): bool {
         $hashed_password = password_hash($newPassword, PASSWORD_DEFAULT);
 
