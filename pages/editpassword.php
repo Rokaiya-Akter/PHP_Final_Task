@@ -27,7 +27,7 @@ if (empty($password)) {
 
 ?>
 <?php include '../includes/header.php'; ?>
-//styling and stating new sub div
+
 <style>
     .mt-10 {
         margin-top: 10px;
