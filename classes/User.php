@@ -16,8 +16,7 @@ class User {
         $query = "INSERT INTO {$this->table_name} (username, password) VALUES (:username, :password)";
         $stmt = $this->conn->prepare($query);
 
-        $stmt->bindParam(':username', $username);
-        $stmt->bindParam(':password', $hashed_password);
+        $stmt = pass
 
         return $stmt->execute();
     }
