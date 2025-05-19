@@ -8,7 +8,7 @@ class PasswordPlatforms
     {
         $this->conn = $db;
     }
-
+//private function starting
     private function execQuery($query, $params, $fetch = null)
     {
         $stmt = $this->conn->prepare($query);
