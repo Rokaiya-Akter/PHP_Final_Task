@@ -2,51 +2,83 @@
 class PasswordPlatforms
 {
     private $conn;
-    private $table = 'password_platforms';
+    private $table_name = 'password_platforms';
 
     public function __construct($db)
     {
         $this->conn = $db;
     }
-//private function starting
-    private function execQuery($query, $params, $fetch = null)
+
+    public function savePasswordRecord($username, $platform_name, $password)
     {
+        // Insert password record into database
+        $query = "INSERT INTO " . $this->table_name . " (username, platform_name, password) VALUES (:username, :platform_name, :password)";
         $stmt = $this->conn->prepare($query);
-        foreach ($params as $key => $val) {
-            $stmt->bindValue(":$key", $val);
-        }
+        $stmt->bindParam(':username', $username);
+        $stmt->bindParam(':platform_name', $platform_name);
+        $stmt->bindParam(':password', $password);
+
         if ($stmt->execute()) {
-            if ($fetch === 'all') return $stmt->fetchAll(PDO::FETCH_OBJ);
-            if ($fetch === 'one') return $stmt->fetchObject();
+            return true;
+        }
+
+        return false;
+    }
+
+
+    public function updatePasswordRecord($id,  $platform_name, $password)
+    {
+
+        $query = "UPDATE " . $this->table_name . " SET password = :password, platform_name= :platform_name WHERE id = :id";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':password', $password);
+        $stmt->bindParam(':platform_name', $platform_name);
+        $stmt->bindParam(':id', $id);
+
+        if ($stmt->execute()) {
             return true;
         }
         return false;
     }
 
-    public function savePasswordRecord($username, $platform, $password)
-    {
-        return $this->execQuery(
-            "INSERT INTO $this->table (username, platform_name, password) VALUES (:username, :platform, :password)",
-            compact('username', 'platform', 'password')
-        );
-    }
-
-    public function updatePasswordRecord($id, $platform, $password)
-    {
-        return $this->execQuery(
-            "UPDATE $this->table SET platform_name = :platform, password = :password WHERE id = :id",
-            compact('id', 'platform', 'password')
-        );
-    }
 
     public function deletePasswordRecord($id)
     {
-        return $this->execQuery("DELETE FROM $this->table WHERE id = :id", compact('id'));
+
+        $query = "Delete from  " . $this->table_name . " WHERE id = :id";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':id', $id);
+
+        if ($stmt->execute()) {
+            return true;
+        }
+        return false;
     }
 
     public function userPasswords($username)
     {
-        return $this->execQuery("SELECT * FROM $this->table WHERE username = :username", compact('username'), 'all');
+
+        $query = "Select * from  " . $this->table_name . " WHERE username = :username";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':username', $username);
+
+        if ($stmt->execute()) {
+            return $stmt->fetchAll(PDO::FETCH_OBJ);
+        }
+        return false;
     }
 
-    public function verifyPasswordwithUsername($id, $username
+    public function verifyPasswordwithUsername($id,$username)
+    {
+
+        $query = "Select * from  " . $this->table_name . " WHERE username = :username and id = :id";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':username', $username);
+        $stmt->bindParam(':id', $id);
+
+        if ($stmt->execute()) {
+            return $stmt->fetchObject();
+        }
+        return false;
+    }
+}
