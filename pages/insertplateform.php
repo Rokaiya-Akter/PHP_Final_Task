@@ -19,7 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Create Password Plateforms object
     $passwordPlateform = new PasswordPlatforms($conn);
-
+//storing password
     // Attempt to store password
     if ($passwordPlateform->savePasswordRecord($username, $plateform,$password)) {
         // Password Stored Successfully, redirect to success page
