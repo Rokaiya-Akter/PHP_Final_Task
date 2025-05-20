@@ -1,49 +1,62 @@
 <?php
-declare(strict_types=1);
-
 class User {
-    private PDO $conn;
-    private string $table_name = 'users';
+    private $conn;
+    private $table_name = 'users';
 
-    public function __construct(PDO $db) {
+    public function __construct($db) {
         $this->conn = $db;
     }
 
-    
-    public function signup(string $username, string $password): bool {
+    public function signup($username, $password) {
+        // Hash the password
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-
-        $query = "INSERT INTO {$this->table_name} (username, password) VALUES (:username, :password)";
+        
+        // Insert user into database
+        $query = "INSERT INTO " . $this->table_name . " (username, password) VALUES (:username, :password)";
         $stmt = $this->conn->prepare($query);
-
-        $stmt = pass
-
-        return $stmt->execute();
+        $stmt->bindParam(':username', $username);
+        $stmt->bindParam(':password', $hashed_password);
+        
+        if($stmt->execute()) {
+            return true;
+        }
+        
+        return false;
     }
 
-    
-    public function login(string $username, string $password): bool {
-        $query = "SELECT password FROM {$this->table_name} WHERE username = :username";
+    public function login($username, $password) {
+        // Retrieve user from database
+        $query = "SELECT * FROM " . $this->table_name . " WHERE username = :username";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':username', $username);
         $stmt->execute();
-
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        return $user && password_verify($password, $user['password']);
+        if($user) {
+            // Verify password
+            if(password_verify($password, $user['password'])) {
+                return true;
+            }
+        }
+        
+        return false;
     }
 
-  
-    public function changePassword(string $username, string $newPassword): bool {
+    public function changePassword($username, $newPassword) {
+        // Hash the new password
         $hashed_password = password_hash($newPassword, PASSWORD_DEFAULT);
-
-        $query = "UPDATE {$this->table_name} SET password = :password WHERE username = :username";
+        
+        // Update user's password
+        $query = "UPDATE " . $this->table_name . " SET password = :password WHERE username = :username";
         $stmt = $this->conn->prepare($query);
-
         $stmt->bindParam(':password', $hashed_password);
         $stmt->bindParam(':username', $username);
-
-        return $stmt->execute();
+        //var_dump($stmt);exit;
+        if($stmt->execute()) {
+            return true;
+        }
+        
+        return false;
     }
 }
 ?>
