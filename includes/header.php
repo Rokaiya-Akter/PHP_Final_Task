@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -16,7 +17,7 @@ h1 {color:white; background: #102937; text-align: center; padding-top: 25px; pad
 body {
     background: #ededed;
 }
-add some color
+
 .footer {
    position: fixed;
    padding-top: 10px; padding-bottom: 10px;
@@ -32,4 +33,6 @@ add some color
 </head>
 
 <body>
+
+
 
