@@ -1,37 +1,45 @@
-# PHP_Final_Task
-# PHP User Class
+# PHP Password Manager
 
-This project provides a simple PHP class for user authentication and password management using PDO and secure password hashing.
+This is a simple password management system developed in PHP. It allows users to manage their credentials securely across different platforms.
 
 ## Features
 
-- ✅ User Registration (with password hashing)
-- ✅ User Login (with password verification)
-- ✅ Change Password (secure update)
+- User authentication
+- Add, update, and delete password entries
+- Change user passwords
+- Organized MVC-like folder structure
+- Basic UI with reusable components (header/footer)
+- Database-backed credential storage
 
-## Requirements
+## File Structure
 
-- PHP 7.4 or higher
-- MySQL/MariaDB
-- PDO extension enabled
+phpfinal/
+├── index.php
+├── classes/
+│ ├── Database.php
+│ ├── PasswordPlateforms.php
+│ └── User.php
+├── includes/
+│ ├── header.php
+│ └── footer.php
+├── pages/
+│ ├── change_password.php
+│ └── ...
+├── DB/
+│ └── db.sql
 
-## Usage
 
-1. Create a `users` table with `username` and `password` fields.
-2. Establish a PDO database connection.
-3. Use the `User` class to register, log in, or change passwords.
 
-```php
-require_once 'User.php';
-$user = new User($pdo);
 
-// Signup
-$user->signup('john_doe', 'securePassword');
 
-// Login
-if ($user->login('john_doe', 'securePassword')) {
-    echo "Login successful";
-}
 
-// Change Password
-$user->changePassword('john_doe', 'newSecurePassword');
+
+
+
+
+
+
+
+
+
+
